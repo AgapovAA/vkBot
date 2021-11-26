@@ -8,14 +8,15 @@ import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.messages.Message;
 import com.vk.api.sdk.queries.messages.MessagesGetLongPollHistoryQuery;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 @Component
 public class VKCore {
@@ -24,7 +25,7 @@ public class VKCore {
     private GroupActor actor;
     private static int ts;
     private static int maxMsgId = -1;
-    private static Logger logger = Logger.getLogger(String.valueOf(VKCore.class));
+    private static Logger logger = Logger.getLogger(VKCore.class);
 
     public VKCore() throws ClientException, ApiException {
         TransportClient transportClient = HttpTransportClient.getInstance();

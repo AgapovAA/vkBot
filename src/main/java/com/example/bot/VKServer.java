@@ -8,14 +8,15 @@ import com.vk.api.sdk.objects.messages.Keyboard;
 import com.vk.api.sdk.objects.messages.KeyboardButton;
 import com.vk.api.sdk.objects.messages.Message;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 @Component
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class VKServer {
     private static final Integer DEFAULT_DELAY = 300;
     private static final Integer RECONNECT_TIME = 10000;
     private List<Keyboard> keyboardList;
-    private static Logger logger = Logger.getLogger(String.valueOf(VKServer.class));
+    private static Logger logger = Logger.getLogger(VKServer.class);
 
     void start() throws NullPointerException, ApiException, InterruptedException {
         logger.log(Level.INFO, "Running server...");
