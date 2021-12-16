@@ -4,52 +4,57 @@ import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.messages.Keyboard;
 import com.vk.api.sdk.objects.messages.Message;
-import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
-@RequiredArgsConstructor
 public class Messanger implements Runnable {
 
-    private final Message message;
-    private final VKCore vkCore;
-    private final List<Keyboard> keyboardList;
-    private static HashMap<Integer, Integer> iterators = new HashMap();
+    private Message message;
+    private VKCore vkCore;
+    private List<Keyboard> keyboardList;
+    private static Map<Integer, Integer> iterators = new HashMap();
+
+    public Messanger(Message message, VKCore vkCore, List<Keyboard> keyboardList) {
+        this.message = message;
+        this.vkCore = vkCore;
+        this.keyboardList = keyboardList;
+    }
 
     @Override
     public void run() {
-        Integer iterator;
+        Integer iter;
         Random random = new Random();
         String msg = message.getText();
-        int peerId = message.getFromId();
+        int peerId = message.getPeerId();
 
         if (iterators.containsKey(peerId)) {
-            iterator = iterators.get(peerId);
+            iter = iterators.get(peerId);
         } else {
-            iterator = 0;
-            iterators.put(peerId, iterator);
+            iter = 0;
+            iterators.put(peerId, iter);
         }
 
         try {
-            if (msg.equals("вперёд") && iterator < (keyboardList.size() - 1)) {
-                iterator++;
-                iterators.put(peerId, iterator);
+            if (msg.equals("вперёд") && iter < (keyboardList.size() - 1)) {
+                iter++;
+                iterators.put(peerId, iter);
             }
-            if (msg.equals("назад") && iterator > 0) {
-                iterator--;
-                iterators.put(peerId, iterator);
+            if (msg.equals("назад") && iter > 0) {
+                iter--;
+                iterators.put(peerId, iter);
             }
             if (msg.equals("отмена")) {
-                iterator = 0;
-                iterators.put(peerId, iterator);
+                iter = 0;
+                iterators.put(peerId, iter);
             }
             vkCore
                         .getVk()
                         .messages()
                         .send(vkCore.getActor())
-                        .keyboard(keyboardList.get(iterator))
+                        .keyboard(keyboardList.get(iter))
                         .peerId(peerId)
                         .randomId(random.nextInt(100000))
                         .message(msg)
