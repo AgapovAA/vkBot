@@ -37,6 +37,7 @@ public class KboardServiceImpl implements KboardService {
             KeyboardButton keyboardButton = new KeyboardButton()
                     .setAction(new KeyboardButtonAction()
                             .setLabel(s.getLabel())
+                            .setPayload(s.getPayload())
                             .setType(TemplateActionTypeNames.valueOf(s.getType())))
                     .setColor(KeyboardButtonColor.valueOf(s.getColor()));
             navigate.set(s.getPlace() - 1, keyboardButton);
